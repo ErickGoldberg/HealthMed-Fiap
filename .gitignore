@@ -1,0 +1,16 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/HealthMed/CopilotIndices/17.13.449.12402
+/.vs/HealthMed/FileContentIndex
+/.vs/HealthMed/DesignTimeBuild
+/.vs/HealthMed/v17
+/.vs/ProjectEvaluation
+/HealthMed.API/bin/Debug/net8.0
+/HealthMed.API/obj/Debug/net8.0
+/HealthMed.Application/obj/Debug/net8.0
+/HealthMed.Domain/obj/Debug/net8.0
+/HealthMed.API/obj
+/HealthMed.Application/obj
+/HealthMed.Domain/obj
