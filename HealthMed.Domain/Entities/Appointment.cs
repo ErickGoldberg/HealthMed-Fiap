@@ -11,14 +11,14 @@ namespace HealthMed.Domain.Entities
         public string? CancellationReason { get; private set; }
         public decimal Price { get; private set; }
 
-        public Appointment(Guid doctorId, Guid patientId, DateTime scheduledTime, decimal price)
+        public Appointment(Guid doctorId, Guid patientId, DateTime scheduledTime, decimal price, string reason = "")
         {
-            Id = Guid.NewGuid();
             DoctorId = doctorId;
             PatientId = patientId;
             ScheduledTime = scheduledTime;
             Status = AppointmentStatus.Pending;
             Price = price;
+            CancellationReason = reason;
         }
 
         public void Accept()

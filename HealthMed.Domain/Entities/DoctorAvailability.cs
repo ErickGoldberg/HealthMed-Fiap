@@ -5,9 +5,9 @@
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
 
-        public DoctorAvailability(DateTime startTime, DateTime endTime)
+        public DoctorAvailability(Guid doctorId, DateTime startTime, DateTime endTime)
         {
-            Id = Guid.NewGuid();
+            Id = doctorId;
             StartTime = startTime;
             EndTime = endTime;
 

@@ -5,13 +5,16 @@
         public string FullName { get; private set; }
         public string Email { get; private set; }
         public string Cpf { get; private set; }
+        public string Phone { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
-        public Patient(Guid id, string fullName, string email, string cpf)
+        public Patient(string fullName, string email, string cpf, string phone, DateTime dateOfBirth)
         {
-            Id = id;
             FullName = fullName;
             Email = email;
             Cpf = cpf;
+            Phone = phone;
+            DateOfBirth = dateOfBirth;
         }
     }
 }

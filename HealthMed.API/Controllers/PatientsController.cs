@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HealthMed.Application.DTOs;
+using HealthMed.Application.InputModels;
+using HealthMed.Application.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HealthMed.API.Controllers
 {
@@ -6,8 +9,6 @@ namespace HealthMed.API.Controllers
     [ApiController]
     public class PatientsController(IPatientService patientService) : ControllerBase
     {
-        private readonly IPatientService _patientService = patientService;
-
         /// <summary>
         /// Lista os médicos disponíveis com filtros opcionais.
         /// </summary>
@@ -18,7 +19,7 @@ namespace HealthMed.API.Controllers
         [Produces(typeof(List<DoctorDto>))]
         public async Task<IActionResult> GetDoctors([FromQuery] string? specialty = null)
         {
-            var result = await _patientService.GetAvailableDoctorsAsync(specialty);
+            var result = await patientService.GetAvailableDoctorsAsync(specialty);
             return Ok(result.Data);
         }
 
@@ -32,7 +33,7 @@ namespace HealthMed.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> BookAppointment(BookAppointmentInputModel input)
         {
-            var result = await _patientService.BookAppointmentAsync(input);
+            var result = await patientService.BookAppointmentAsync(input);
             return result.IsSuccess ? Created() : BadRequest(result.Message);
         }
 
@@ -47,7 +48,7 @@ namespace HealthMed.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CancelAppointment(Guid appointmentId, [FromBody] CancelAppointmentInputModel input)
         {
-            var result = await _patientService.CancelAppointmentAsync(appointmentId, input.Reason);
+            var result = await patientService.CancelAppointmentAsync(appointmentId, input.Reason);
             return result.IsSuccess ? NoContent() : BadRequest(result.Message);
         }
 
@@ -61,7 +62,7 @@ namespace HealthMed.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register(CreateOrEditPatientInputModel input)
         {
-            var result = await _patientService.CreatePatientAsync(input);
+            var result = await patientService.CreatePatientAsync(input);
             return result.IsSuccess ? Created() : BadRequest(result.Message);
         }
 
@@ -75,7 +76,7 @@ namespace HealthMed.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update(CreateOrEditPatientInputModel input)
         {
-            var result = await _patientService.UpdatePatientAsync(input);
+            var result = await patientService.UpdatePatientAsync(input);
             return result.IsSuccess ? NoContent() : BadRequest(result.Message);
         }
 
@@ -89,7 +90,7 @@ namespace HealthMed.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var result = await _patientService.DeletePatientAsync(id);
+            var result = await patientService.DeletePatientAsync(id);
             return result.IsSuccess ? NoContent() : BadRequest(result.Message);
         }
     }

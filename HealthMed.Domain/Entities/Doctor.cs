@@ -5,21 +5,25 @@
         public string Name { get; private set; }
         public string Crm { get; private set; }
         public string Specialty { get; private set; }
+        public string Email { get; set; } 
+        public string Phone { get; set; } 
+
 
         private readonly List<DoctorAvailability> _availabilities = new();
         public IReadOnlyCollection<DoctorAvailability> Availabilities => _availabilities.AsReadOnly();
 
-        public Doctor(Guid id, string name, string crm, string specialty)
+        public Doctor(string name, string crm, string specialty, string email, string phone)
         {
-            Id = id;
             Name = name;
             Crm = crm;
             Specialty = specialty;
+            Email = email;
+            Phone = phone;
         }
 
         public void AddAvailability(DateTime startTime, DateTime endTime)
         {
-            _availabilities.Add(new DoctorAvailability(startTime, endTime));
+            _availabilities.Add(new DoctorAvailability(Id, startTime, endTime));
         }
 
         public void RemoveAvailability(Guid availabilityId)

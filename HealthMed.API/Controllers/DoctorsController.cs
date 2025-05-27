@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HealthMed.Application.DTOs;
+using HealthMed.Application.InputModels;
+using HealthMed.Application.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HealthMed.API.Controllers
 {
@@ -6,8 +9,6 @@ namespace HealthMed.API.Controllers
     [ApiController]
     public class DoctorsController(IDoctorService doctorService) : ControllerBase
     {
-        private readonly IDoctorService _doctorService = doctorService;
-
         /// <summary>
         /// Retorna os dados de um médico pelo ID.
         /// </summary>
@@ -19,7 +20,7 @@ namespace HealthMed.API.Controllers
         [Produces(typeof(DoctorDto))]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var result = await _doctorService.GetDoctorByIdAsync(id);
+            var result = await doctorService.GetDoctorByIdAsync(id);
             return result.Data != null ? Ok(result.Data) : NotFound();
         }
 
@@ -33,7 +34,7 @@ namespace HealthMed.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register(CreateOrEditDoctorInputModel input)
         {
-            var result = await _doctorService.CreateDoctorAsync(input);
+            var result = await doctorService.CreateDoctorAsync(input);
             return result.IsSuccess ? Created() : BadRequest(result.Message);
         }
 
@@ -47,7 +48,7 @@ namespace HealthMed.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update(CreateOrEditDoctorInputModel input)
         {
-            var result = await _doctorService.UpdateDoctorAsync(input);
+            var result = await doctorService.UpdateDoctorAsync(input);
             return result.IsSuccess ? NoContent() : BadRequest(result.Message);
         }
 
@@ -61,7 +62,7 @@ namespace HealthMed.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var result = await _doctorService.DeleteDoctorAsync(id);
+            var result = await doctorService.DeleteDoctorAsync(id);
             return result.IsSuccess ? NoContent() : BadRequest(result.Message);
         }
 
@@ -75,7 +76,7 @@ namespace HealthMed.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddAvailability(AddAvailabilityInputModel input)
         {
-            var result = await _doctorService.AddAvailabilityAsync(input);
+            var result = await doctorService.AddAvailabilityAsync(input);
             return result.IsSuccess ? Created() : BadRequest(result.Message);
         }
 
@@ -89,7 +90,7 @@ namespace HealthMed.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RemoveAvailability(Guid availabilityId)
         {
-            var result = await _doctorService.RemoveAvailabilityAsync(availabilityId);
+            var result = await doctorService.RemoveAvailabilityAsync(availabilityId);
             return result.IsSuccess ? NoContent() : BadRequest(result.Message);
         }
 
@@ -103,7 +104,7 @@ namespace HealthMed.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AcceptAppointment(Guid appointmentId)
         {
-            var result = await _doctorService.AcceptAppointmentAsync(appointmentId);
+            var result = await doctorService.AcceptAppointmentAsync(appointmentId);
             return result.IsSuccess ? NoContent() : BadRequest(result.Message);
         }
 
@@ -117,7 +118,7 @@ namespace HealthMed.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RejectAppointment(Guid appointmentId)
         {
-            var result = await _doctorService.RejectAppointmentAsync(appointmentId);
+            var result = await doctorService.RejectAppointmentAsync(appointmentId);
             return result.IsSuccess ? NoContent() : BadRequest(result.Message);
         }
     }
