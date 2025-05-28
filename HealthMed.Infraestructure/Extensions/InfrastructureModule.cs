@@ -33,6 +33,7 @@ namespace HealthMed.Infrastructure.Extensions
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IDoctorAvailabilityRepository, DoctorAvailabilityRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }
