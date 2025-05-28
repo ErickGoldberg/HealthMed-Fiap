@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HealthMed.Infrastructure
+namespace HealthMed.Infrastructure.Extensions
 {
     public static class InfrastructureModule
     {
@@ -27,14 +27,12 @@ namespace HealthMed.Infrastructure
             return services;
         }
 
-        private static IServiceCollection AddRepositories(this IServiceCollection services)
+        private static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IDoctorAvailabilityRepository, DoctorAvailabilityRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-
-            return services;
         }
     }
 }

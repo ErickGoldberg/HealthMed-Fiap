@@ -1,7 +1,8 @@
 using HealthMed.API.Extensions;
 using HealthMed.API.Middleware;
-using HealthMed.Application;
+using HealthMed.Application.Extensions;
 using HealthMed.Infrastructure;
+using HealthMed.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

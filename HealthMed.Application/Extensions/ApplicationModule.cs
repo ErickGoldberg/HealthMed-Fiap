@@ -1,7 +1,7 @@
 ﻿using HealthMed.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HealthMed.Application
+namespace HealthMed.Application.Extensions
 {
     public static class ApplicationModule
     {
@@ -13,12 +13,10 @@ namespace HealthMed.Application
             return services;
         }
 
-        private static IServiceCollection AddServices(this IServiceCollection services)
+        private static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IDoctorService, DoctorService>();
-
-            return services;
         }
     }
 }
