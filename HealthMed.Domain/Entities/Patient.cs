@@ -2,9 +2,9 @@
 {
     public class Patient : EntityBase
     {
-        public string FullName { get; private set; }
+        public string FullName { get; set; }
         public string Email { get; private set; }
-        public string Cpf { get; private set; }
+        public string Cpf { get; set; }
         public string Phone { get; set; }
         public DateTime DateOfBirth { get; set; }
 

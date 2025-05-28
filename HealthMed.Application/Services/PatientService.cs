@@ -3,26 +3,19 @@ using HealthMed.Application.DTOs;
 using HealthMed.Application.InputModels;
 using HealthMed.Domain.Entities;
 using HealthMed.Domain.Entities.Enums;
+using HealthMed.Domain.Repositories;
 
 namespace HealthMed.Application.Services
 {
-    public class PatientService : IPatientService
+    public class PatientService(
+        IPatientRepository patientRepository,
+        IDoctorRepository doctorRepository,
+        IAppointmentRepository appointmentRepository,
+        IUnitOfWork unitOfWork) : IPatientService
     {
-        private readonly ApplicationDbContext _context;
-
-        public PatientService(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<Result<List<DoctorDto>>> GetAvailableDoctorsAsync(string? specialty)
         {
-            var query = _context.Doctors.Include(d => d.Availabilities).AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(specialty))
-                query = query.Where(d => d.Specialty == specialty);
-
-            var doctors = await query.ToListAsync();
+            var doctors = await doctorRepository.GetAvailableDoctorsAsync(specialty);
 
             var dtos = doctors.Select(d => new DoctorDto
             {
@@ -38,34 +31,34 @@ namespace HealthMed.Application.Services
         {
             var appointment = new Appointment(input.DoctorId, input.PatientId, input.ScheduledAt, input.Price, input.Reason);
 
-            _context.Appointments.Add(appointment);
-            await _context.SaveChangesAsync();
+            await appointmentRepository.AddAsync(appointment);
+            await unitOfWork.CommitAsync();
 
             return Result.Success("Consulta agendada com sucesso.");
         }
 
         public async Task<Result> CancelAppointmentAsync(Guid appointmentId, string reason)
         {
-            var appointment = await _context.Appointments.FindAsync(appointmentId);
+            var appointment = await appointmentRepository.GetByIdAsync(appointmentId);
 
             if (appointment == null)
                 return Result.NotFound("Consulta não encontrada.");
 
             appointment.Status = AppointmentStatus.Canceled;
             appointment.CancellationReason = reason;
-            await _context.SaveChangesAsync();
+            await unitOfWork.CommitAsync();
 
             return Result.Success("Consulta cancelada com sucesso.");
         }
 
         public async Task<Result<List<PatientDto>>> GetAllPatientsAsync()
         {
-            var patients = await _context.Patients.ToListAsync();
+            var patients = await patientRepository.GetAllAsync();
 
             var dtos = patients.Select(p => new PatientDto
             {
                 Id = p.Id,
-                Name = p.Name,
+                Name = p.FullName,
                 Email = p.Email,
                 Phone = p.Phone
             }).ToList();
@@ -75,7 +68,7 @@ namespace HealthMed.Application.Services
 
         public async Task<Result<PatientDto>> GetPatientByIdAsync(Guid id)
         {
-            var patient = await _context.Patients.FindAsync(id);
+            var patient = await patientRepository.GetByIdAsync(id);
 
             if (patient == null)
                 return Result<PatientDto>.NotFound("Paciente não encontrado.");
@@ -83,7 +76,7 @@ namespace HealthMed.Application.Services
             return Result<PatientDto>.Success(new PatientDto
             {
                 Id = patient.Id,
-                Name = patient.Name,
+                Name = patient.FullName,
                 DateOfBirth = patient.DateOfBirth,
                 Email = patient.Email,
                 Phone = patient.Phone,
@@ -95,21 +88,21 @@ namespace HealthMed.Application.Services
         {
             var patient = new Patient(input.Name, input.Email, input.Cpf, input.Phone, input.DateOfBirth);
 
-            _context.Patients.Add(patient);
-            await _context.SaveChangesAsync();
+            await patientRepository.AddAsync(patient);
+            await unitOfWork.CommitAsync();
 
             return Result.Success("Paciente cadastrado com sucesso.");
         }
 
         public async Task<Result> UpdatePatientAsync(CreateOrEditPatientInputModel input)
         {
-            var patient = await _context.Patients.FindAsync(input.Id);
+            var patient = await patientRepository.GetByIdAsync(input.Id);
 
             if (patient == null)
                 return Result.NotFound("Paciente não encontrado.");
 
-            if(!string.IsNullOrWhiteSpace(input.Name))
-                patient.Name = input.Name;
+            if (!string.IsNullOrWhiteSpace(input.Name))
+                patient.FullName = input.Name;
 
             if (!string.IsNullOrWhiteSpace(input.Phone))
                 patient.Phone = input.Phone;
@@ -120,20 +113,20 @@ namespace HealthMed.Application.Services
             if (input.DateOfBirth != default)
                 patient.DateOfBirth = input.DateOfBirth;
 
-            await _context.SaveChangesAsync();
+            await unitOfWork.CommitAsync();
 
             return Result.Success("Paciente atualizado com sucesso.");
         }
 
         public async Task<Result> DeletePatientAsync(Guid id)
         {
-            var patient = await _context.Patients.FindAsync(id);
+            var patient = await patientRepository.GetByIdAsync(id);
 
             if (patient == null)
                 return Result.NotFound("Paciente não encontrado.");
 
-            _context.Patients.Remove(patient);
-            await _context.SaveChangesAsync();
+            patientRepository.Remove(patient);
+            await unitOfWork.CommitAsync();
 
             return Result.Success("Paciente deletado com sucesso.");
         }

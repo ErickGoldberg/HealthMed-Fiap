@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthMed.API", "HealthMed.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthMed.Domain", "HealthMed.Domain\HealthMed.Domain.csproj", "{3C4A6FAC-BA21-4518-B641-B3D7E633BAEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthMed.Infraestructure", "HealthMed.Infraestructure\HealthMed.Infraestructure.csproj", "{B636DC0F-2B9D-4D2A-BFB8-7B2CD1F80A59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthMed.Infrastructure", "HealthMed.Infraestructure\HealthMed.Infrastructure.csproj", "{B636DC0F-2B9D-4D2A-BFB8-7B2CD1F80A59}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthMed.Application", "HealthMed.Application\HealthMed.Application.csproj", "{5B934073-BBCF-4329-A9F1-A85496C03A00}"
 EndProject

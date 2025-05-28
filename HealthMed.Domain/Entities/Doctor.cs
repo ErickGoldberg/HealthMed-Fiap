@@ -2,9 +2,9 @@
 {
     public class Doctor : EntityBase
     {
-        public string Name { get; private set; }
-        public string Crm { get; private set; }
-        public string Specialty { get; private set; }
+        public string Name { get; set; }
+        public string Crm { get; set; }
+        public string Specialty { get; set; }
         public string Email { get; set; } 
         public string Phone { get; set; } 
 

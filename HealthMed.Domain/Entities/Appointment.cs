@@ -7,8 +7,8 @@ namespace HealthMed.Domain.Entities
         public Guid DoctorId { get; private set; }
         public Guid PatientId { get; private set; }
         public DateTime ScheduledTime { get; private set; }
-        public AppointmentStatus Status { get; private set; }
-        public string? CancellationReason { get; private set; }
+        public AppointmentStatus Status { get; set; }
+        public string? CancellationReason { get; set; }
         public decimal Price { get; private set; }
 
         public Appointment(Guid doctorId, Guid patientId, DateTime scheduledTime, decimal price, string reason = "")
